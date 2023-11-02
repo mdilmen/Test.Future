@@ -3,11 +3,12 @@ using Test.Future.Configuration;
 using Test.Future.Data;
 
 var builder = WebApplication.CreateBuilder(args);
-
+var connectionString = builder.Configuration.GetConnectionString("ConnectionString");
 // Add services to the container.
 builder.Services.AddDbContext<FutureContext>(cfg =>
 {
-    cfg.UseInMemoryDatabase("myDb");
+    //cfg.UseInMemoryDatabase("myDb");
+    cfg.UseSqlServer(connectionString);
 });
 builder.Services.AddControllersWithViews();
 builder.Services.AddServiceRegistration();
