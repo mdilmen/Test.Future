@@ -1,0 +1,68 @@
+﻿@using Test.Future.Data.Enums;
+@model Test.Future.Models.FutueViewModel
+
+<div class="card col-12 offset-0 col-sm-12 offset-sm-0 col-md-12 offset-md-0 col-lg-6 offset-lg-3 col-xl-6 offset-xl-3 p-0">
+    <form method="post" id="formContract" class="p-lg-3 p-md-3 p-sm-2 p-sm-2 p-2">
+        <div class="card">
+            <div class="card-header ">
+                <p class="text-muted">Ödeme Planınızı, ilgili bilgileri dolurarak hesaplayabilirsiniz.</p>
+            </div>
+            <div class="card-body">
+                <div asp-validation-summary="All" class="text-danger" id="divModelState"></div>
+                <div class="form-group mb-2">
+                    <label asp-for="CardName">Ad </label>
+                    <input asp-for="CardName" type="text" class="form-control" />
+                    <span asp-validation-for="CardName" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-2">
+                    <label asp-for="CardLastName">Soyad </label>
+                    <input asp-for="CardLastName" type="text" class="form-control" />
+                    <span asp-validation-for="CardLastName" class="text-danger"></span>
+                </div>
+                <div>
+                    <div class="form-group mb-2">
+                        <label asp-for="PolicyNumber">Poliçe No</label>
+                        <input asp-for="PolicyNumber" class="form-control" />
+                        <span asp-validation-for="PolicyNumber" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group mb-2">
+                    <label asp-for="ExpenseId">Poliçe Tipi</label><br />
+                    <select asp-for="ExpenseId" asp-items="ViewBag.Expenses" id="ExpenseSelect" class="form-select"></select>
+                    <span asp-validation-for="ExpenseId" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-2">
+                    <label asp-for="PolicyStartDate">Poliçe Başlangıç Tarihi</label><br />
+                    <input asp-for="PolicyStartDate" type="text" class="form-control datepicker" style="padding-left:12px;" placeholder="gg.aa.yyyy" />
+                    <span asp-validation-for="PolicyStartDate" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-2">
+                    <label asp-for="PolicyEndDate">Poliçe Bitiş Tarihi</label><br />
+                    <input asp-for="PolicyEndDate" type="text" class="form-control datepicker" style="padding-left:12px;" placeholder="gg.aa.yyyy" />
+                    <span asp-validation-for="PolicyEndDate" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-2">
+                    <label asp-for="InstallmentCount">Taksit Sayısı</label>
+                    <input asp-for="InstallmentCount" type="text" class="form-control PhoneNumber" id="PhoneNumber_Member" placeholder="1-12" />
+                    <span asp-validation-for="InstallmentCount" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-2">
+                    <label asp-for="PaymentMethodType">Ödeme Seçimi</label>
+                    <select asp-for="PaymentMethodType" asp-items="Html.GetEnumSelectList<PaymentMethodType>()" id="PaymentMethodTypeSelect" class="form-select"></select>
+                    <span asp-validation-for="PaymentMethodType" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body bg-light">
+                <div class="row">
+                    <div class="col-12  d-grid gap-2 d-md-flex justify-content-md-end mt-1">
+                        <button type="submit" class="btn btn-primary" id="btnCalculate">
+                            <i class="fa fa-calculator"></i> Hesapla
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
