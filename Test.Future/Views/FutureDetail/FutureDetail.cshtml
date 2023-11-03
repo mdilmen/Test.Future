@@ -1,0 +1,49 @@
+﻿@using Test.Future.Data.Enums;
+@model Test.Future.Models.FutureDetailViewModel
+<div class="card col-12 offset-0 col-sm-12 offset-sm-0 col-md-12 offset-md-0 col-lg-6 offset-lg-3 col-xl-6 offset-xl-3 p-0">
+    <div class="card mb-4">
+        <div class="card-header">
+            Kayıt Bilgileri
+        </div>
+        <div class="pt-2 pt-lg-3 pt-md-3">
+            <ul>
+                @{
+                    <li>@Model.PolicyNumber</li>
+                    <li>@Model.CardName @Model.CardLastName</li>
+                    <li>@Model.Amount.ToString("N2")</li>
+                }
+            </ul>
+        </div>
+    </div>
+    <div class="card mt-4 mb-4">
+        <div class="card-header">
+            Taksit Bilgileri
+        </div>
+        <div class="card-body p-1">
+            <div class="col-12 border-bottom d-inline-flex no-gutter bg-primary text-white text-center ">
+                <div class="col-4 col-md-4 text-left border border-white">Tarih</div>
+                <div class="col-4 col-md-4 pl-1 border border-white">Aylık Gün Sayısı</div>
+                <div class="col-4 col-md-4 pl-1 border border-white">@Model.PaymentMethodType Hesaplama</div>
+            </div>
+            @{
+                foreach (var cost in Model.FutureCostModel.Costs.OrderBy(c => c.Order))
+                {
+                    <div class="col-12 d-inline-flex text-center p-lg-2 p-md-2">
+                        <div class="col-4 col-md-4" style="text-align: center;">@cost.PayDay?.ToShortDateString()</div>
+                        <div class="col-8 d-inline-flex justify-content-around text-center">
+                            <div class="">@cost.DayCount</div>
+                            <div class="">₺@cost.Amount.ToString("N2")</div>
+                        </div>
+                    </div>
+                }
+            }
+            <div class="col-12 d-inline-flex text-center p-lg-2 p-md-2 bg-light">
+                <div class="col-4 col-md-4" style="text-align: center;">Toplam</div>
+                <div class="col-8 d-inline-flex justify-content-around text-center">   
+                    <div class=""></div>
+                    <div class="">₺@Model.Amount.ToString("N2")</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

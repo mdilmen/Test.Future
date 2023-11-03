@@ -1,11 +1,11 @@
 ﻿@using Test.Future.Data.Enums;
-@model Test.Future.Models.FutueViewModel
+@model Test.Future.Models.FutureViewModel
 
 <div class="card col-12 offset-0 col-sm-12 offset-sm-0 col-md-12 offset-md-0 col-lg-6 offset-lg-3 col-xl-6 offset-xl-3 p-0">
-    <form method="post" id="formContract" class="p-lg-3 p-md-3 p-sm-2 p-sm-2 p-2">
+    <form method="post" id="formFuture" class="p-lg-3 p-md-3 p-sm-2 p-sm-2 p-2">
         <div class="card">
             <div class="card-header ">
-                <p class="text-muted">Ödeme Planınızı, ilgili bilgileri dolurarak hesaplayabilirsiniz.</p>
+                <p class="text-muted">Ödeme Planınızı, ilgili bilgileri doldurarak hesaplayabilirsiniz.</p>
             </div>
             <div class="card-body">
                 <div asp-validation-summary="All" class="text-danger" id="divModelState"></div>
@@ -43,13 +43,23 @@
                 </div>
                 <div class="form-group mb-2">
                     <label asp-for="InstallmentCount">Taksit Sayısı</label>
-                    <input asp-for="InstallmentCount" type="text" class="form-control PhoneNumber" id="PhoneNumber_Member" placeholder="1-12" />
+                    <input asp-for="InstallmentCount" type="text" class="form-control" placeholder="1-12" />
                     <span asp-validation-for="InstallmentCount" class="text-danger"></span>
                 </div>
                 <div class="form-group mb-2">
                     <label asp-for="PaymentMethodType">Ödeme Seçimi</label>
                     <select asp-for="PaymentMethodType" asp-items="Html.GetEnumSelectList<PaymentMethodType>()" id="PaymentMethodTypeSelect" class="form-select"></select>
                     <span asp-validation-for="PaymentMethodType" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-2">
+                    <label asp-for="Amount">Tutar</label>
+                    <input asp-for="Amount" type="text" class="form-control"  placeholder="35000" />
+                    <span asp-validation-for="Amount" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-2">
+                    <label asp-for="Comment">Açıklama</label>
+                    <input asp-for="Comment" type="text" class="form-control" placeholder="lorem ipsum..." />
+                    <span asp-validation-for="Comment" class="text-danger"></span>
                 </div>
             </div>
         </div>

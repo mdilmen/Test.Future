@@ -8,7 +8,7 @@ using Test.Future.Data;
 
 #nullable disable
 
-namespace Test.Future.Data
+namespace Test.Future.Data.Migrations
 {
     [DbContext(typeof(FutureContext))]
     partial class FutureContextModelSnapshot : ModelSnapshot

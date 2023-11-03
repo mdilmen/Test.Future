@@ -1,4 +1,5 @@
 ﻿using Test.Future.Data.Entities;
+using Test.Future.Data.Enums;
 using Test.Future.Services.FutureCostService.Models;
 
 namespace Test.Future.Services.FutureCostService
@@ -7,18 +8,59 @@ namespace Test.Future.Services.FutureCostService
     {
         public async Task<FutureCostModel> GetCost(HS_CostOfFuture future)
         {
-            // Mocking here ..
-            FutureCostModel model = new FutureCostModel();
+            var costs = await CalculateCosts(future);
+            return new FutureCostModel { Costs = costs };
+        }
 
-            CostModel cost1 = new CostModel() { Id = 1, Amount= 100, Order = 1 };
-            CostModel cost2 = new CostModel() { Id = 2, Amount= 200, Order = 2 };
-            CostModel cost3 = new CostModel() { Id = 3, Amount= 300, Order = 3 };
+        private static async Task<List<CostModel>> CalculateCosts(HS_CostOfFuture future)
+        {
+            var costs = new List<CostModel>();
+            DateTime? start = future.PolicyBeginDate;
+            int installmentCount = future.InstallmentCount;
 
-            model.Costs.Add(cost1);
-            model.Costs.Add(cost2); 
-            model.Costs.Add(cost3);
+            if (start.HasValue && installmentCount > 0)
+            {
+                for (int i = 0; i < installmentCount; i++)
+                {
+                    DateTime costDate = start.Value.AddMonths(i);
+                    CostModel cost = new CostModel
+                    {
+                        Id = i + 1,
+                        PayDay = new DateTime(costDate.Year, costDate.Month, 1),
+                        DayCount = DateTime.DaysInMonth(costDate.Year, costDate.Month)
+                    };
+                    costs.Add(cost);
+                }
 
-            return model;            
+                var totalDayCount = costs.Sum(cost => cost.DayCount);
+                var methodType = future.PaymentMethodType;
+                var amount = future.Amount;
+
+                foreach (var cost in costs)
+                {
+                    cost.Amount = await CalculateAmountForCost(cost, totalDayCount, methodType, amount, installmentCount);
+                }
+            }
+
+            return costs;
+        }
+
+        private static Task<decimal> CalculateAmountForCost(CostModel model, int totalDays, PaymentMethodType methodType, decimal amount, int installmentCount)
+        {
+            decimal result = 0;
+
+            switch (methodType)
+            {
+                case PaymentMethodType.Günlük:
+                    result = ((decimal)model.DayCount / totalDays) * amount;
+                    break;
+                case PaymentMethodType.Aylık:
+                    result = amount / installmentCount;
+                    break;
+            }
+
+            return Task.FromResult(result);
         }
     }
+
 }

@@ -9,10 +9,10 @@ using Test.Future.Data;
 
 #nullable disable
 
-namespace Test.Future.Data
+namespace Test.Future.Data.Migrations
 {
     [DbContext(typeof(FutureContext))]
-    [Migration("20231102214252_Initial")]
+    [Migration("20231103084858_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
