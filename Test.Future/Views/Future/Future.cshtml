@@ -8,7 +8,7 @@
                 <p class="text-muted">Ödeme Planınızı, ilgili bilgileri doldurarak hesaplayabilirsiniz.</p>
             </div>
             <div class="card-body">
-                <div asp-validation-summary="All" class="text-danger" id="divModelState"></div>
+                <div asp-validation-summary=ModelOnly class="text-danger" id="divModelState"></div>
                 <div class="form-group mb-2">
                     <label asp-for="CardName">Ad </label>
                     <input asp-for="CardName" type="text" class="form-control" />
@@ -53,7 +53,7 @@
                 </div>
                 <div class="form-group mb-2">
                     <label asp-for="Amount">Tutar</label>
-                    <input asp-for="Amount" type="text" class="form-control"  placeholder="35000" />
+                    <input asp-for="Amount" type="text" class="form-control" placeholder="35000" />
                     <span asp-validation-for="Amount" class="text-danger"></span>
                 </div>
                 <div class="form-group mb-2">

@@ -1,8 +1,14 @@
 using Microsoft.EntityFrameworkCore;
+using Serilog;
+using Serilog.Events;
+using Serilog.Formatting.Compact;
 using Test.Future.Configuration;
 using Test.Future.Data;
 
 var builder = WebApplication.CreateBuilder(args);
+LogConfiguration(builder);
+
+
 var connectionString = builder.Configuration.GetConnectionString("ConnectionString");
 // Add services to the container.
 builder.Services.AddDbContext<FutureContext>(cfg =>
@@ -51,4 +57,34 @@ app.MapControllerRoute(
 
 
 
-app.Run();
+try
+{
+    Log.Information("Starting web host");
+    app.Run();
+    return 0;
+}
+catch (Exception ex)
+{
+    Log.Fatal(ex, "Host terminated unexpectedly");
+    return 1;
+}
+finally
+{
+    Log.CloseAndFlush();
+}
+
+
+static void LogConfiguration(WebApplicationBuilder builder)
+{
+    Log.Logger = new LoggerConfiguration()
+        .Enrich.FromLogContext()
+        .Enrich.WithProperty("ApplicationName", "Test.Future")
+        .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Warning)
+        .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+        .MinimumLevel.Override("System.Net.Http.HttpClient", LogEventLevel.Warning)
+        .WriteTo.File(new RenderedCompactJsonFormatter(), @"c:/temp/logs/Test.Future/Test.Future_.json", rollingInterval: RollingInterval.Day)
+        .CreateLogger();
+
+    builder.Host.UseSerilog();
+}
+
